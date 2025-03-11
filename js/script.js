@@ -2,8 +2,10 @@ window.addEventListener("DOMContentLoaded", () => {
   let tab_content = document.querySelectorAll(".tab_content"),
     tabheader = document.querySelectorAll(".tabheader__item"),
     tabParent = document.querySelector(".tabheader__items");
-  offers_items = document.querySelector(".offers-items");
-  menu_items = document.querySelector(".daytime-items");
+    offers_items = document.querySelector(".offers-items");
+    menu_items = document.querySelector(".daytime-items");
+    loader = document.querySelector(".load-container"),
+    html = document.querySelector('html');
 
   function hideTabcontent() {
     tab_content.forEach((tabs) => {
@@ -54,7 +56,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function formatNumber(raqam) { 
+  function formatNumber(raqam) {
     if (raqam < 10) {
       return `0${raqam}`;
     } else {
@@ -143,56 +145,56 @@ window.addEventListener("DOMContentLoaded", () => {
         text: `Ismi: ${objects.name}. Tel raqami: ${objects.phone}`,
       }),
     })
-      .then(()=>(statusMessage.textContent = message.loading))
-      .then(()=>(statusMessage.textContent = message.success))
-      .catch(()=>(statusMessage.textContent = message.failure))
-      .finally(()=> setTimeout (()=>{
-        statusMessage.remove()
-      },2000)
-      )
+      .then(() => (statusMessage.textContent = message.loading))
+      .then(() => (statusMessage.textContent = message.success))
+      .catch(() => (statusMessage.textContent = message.failure))
+      .finally(() =>
+        setTimeout(() => {
+          statusMessage.remove();
+        }, 2000)
+      );
   });
   //Slider
-  const slides = document.querySelectorAll('.offer__slide'),
-  prev = document.querySelector('.offer__slider-prev'),
-  next = document.querySelector('.offer__slider-next'),
-  current = document.querySelector('#current'),
-  total = document.querySelector('#total');
+  const slides = document.querySelectorAll(".offer__slide"),
+    prev = document.querySelector(".offer__slider-prev"),
+    next = document.querySelector(".offer__slider-next"),
+    current = document.querySelector("#current"),
+    total = document.querySelector("#total");
 
-let slideIndex = 1;
+  let slideIndex = 1;
 
-function showSlides(index) {
-  if (index > slides.length) {
-    slideIndex = 1; 
-  } else if (index < 1) {
-    slideIndex = slides.length; 
-  } else {
-    slideIndex = index; 
+  function showSlides(index) {
+    if (index > slides.length) {
+      slideIndex = 1;
+    } else if (index < 1) {
+      slideIndex = slides.length;
+    } else {
+      slideIndex = index;
+    }
+
+    slides.forEach((slide) => {
+      slide.style.display = "none";
+    });
+
+    slides[slideIndex - 1].style.display = "block";
+
+    current.textContent = `${String(slideIndex).padStart(2, "0")}`;
   }
 
-  slides.forEach(slide => {
-    slide.style.display = "none"; 
+  total.textContent = `${String(slides.length).padStart(2, "0")}`;
+
+  showSlides(slideIndex);
+
+  next.addEventListener("click", () => {
+    showSlides(slideIndex + 1);
   });
 
-  slides[slideIndex - 1].style.display = 'block'; 
+  prev.addEventListener("click", () => {
+    showSlides(slideIndex - 1);
+  });
 
-  current.textContent = `${String(slideIndex).padStart(2, '0')}`;
-}
-
-total.textContent = `${String(slides.length).padStart(2, '0')}`;
-
-showSlides(slideIndex);
-
-next.addEventListener('click', () => {
-  showSlides(slideIndex + 1); 
-});
-
-prev.addEventListener('click', () => {
-  showSlides(slideIndex - 1); 
-});
-
-
-
-
-
-
+  setTimeout(() => {
+   loader.style.display = "none"
+   html.style.overflow = "auto"
+  }, 3000)
 });
